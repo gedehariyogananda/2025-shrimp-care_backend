@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeCreate, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuidv4, v5 as uuidv5 } from 'uuid'
 import Hash from '@ioc:Adonis/Core/Hash'
+import Diagnosis from '../Diagnosis/Diagnosis'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -43,4 +44,10 @@ export default class User extends BaseModel {
       data.password = await Hash.make(data.password)
     }
   }
+
+  @hasMany(() => Diagnosis, {
+    foreignKey: 'user_id',
+  })
+
+  public diagnosis: HasMany<typeof Diagnosis>
 }

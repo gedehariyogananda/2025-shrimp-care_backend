@@ -8,6 +8,7 @@ import {
 } from "@ioc:Adonis/Lucid/Orm";
 import { v4 as uuidv4, v5 as uuidv5 } from "uuid";
 import Symptoms from "../Diagnosis/Symptoms";
+import Diagnosis from "../Diagnosis/Diagnosis";
 
 export default class Disease extends BaseModel {
   @column({ isPrimary: true })
@@ -53,4 +54,9 @@ export default class Disease extends BaseModel {
     foreignKey: "symptom_id",
   })
   public symptom: HasMany<typeof Symptoms>;
+
+  @hasMany(() => Diagnosis, {
+    foreignKey: "disease_id",
+  })
+  public diagnosis: HasMany<typeof Diagnosis>;
 }
