@@ -3,11 +3,10 @@ import User from "App/Models/User/User";
 
 export default class UserRepository extends BaseRepository {
   constructor() {
-    super(User)
+    super(User);
   }
 
-  async findByEmail(email: string) : Promise<User | null> {
-    return await User.query().where('email', email).first()
+  async findByEmail(email: string): Promise<User | null> {
+    return await User.query().where("email", email).first();
   }
 }
-    

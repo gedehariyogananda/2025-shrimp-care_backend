@@ -46,7 +46,7 @@ Route.group(function () {
       }
     })
   }
-}).prefix('auth')
+}).prefix('api/auth')
 
 Route.get('/', async ({ view }) => {
   return view.render('welcome')

@@ -61,7 +61,7 @@ export default class AuthService {
 
   async generateToken(auth: any, user: any, rememberMe: boolean) {
     try {
-      const expiresIn = rememberMe ? '7days' : '4hours'
+      const expiresIn = rememberMe ? '30days' : '4hours'
       const token = await auth.use('api').generate(user, {expiresIn})
       const jwtToken = jwt.sign({user}, 'PeSgVkYp3s6v9y$B&E)H@McQfTjWnZq4', {expiresIn: rememberMe ? '7d' : '4h'})
       return { token: token.token, jwtToken }

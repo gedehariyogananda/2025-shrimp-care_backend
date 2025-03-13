@@ -11,7 +11,16 @@ export default class AuthController {
 
   public async login ({ auth, request, response }: HttpContextContract) {
     try {
-      const credentials = this.getBasicAuth(request.header('authorization'))
+      const user = await this.userRepository.findByEmail(request.body().email)
+      if (!user) {
+        return response.error('User tidak ditemukan!')
+      }
+
+      const credentials = {
+        email: user.email,
+        password: request.body().password
+      }
+
       const rememberMe = request.body().remember_me ?? false
       const token = await this.service.login(credentials, auth, rememberMe)
       return response.api(token, 'OK', 200, request)
@@ -50,7 +59,7 @@ export default class AuthController {
             status:true
           })
         }
-        
+
         const authResult = await this.service.generateToken(auth, user, true)
         const encodeToken = Base64.encode(JSON.stringify(authResult))
         return response.redirect().toPath(`http://localhost:4200/google-redirect?token=${encodeToken}`)
