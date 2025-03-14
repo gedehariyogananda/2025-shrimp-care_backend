@@ -27,6 +27,9 @@ export default class Disease extends BaseModel {
   public risk_level: number;
 
   @column()
+  public max_symptom: number;
+
+  @column()
   public description: string;
 
   @column.dateTime({ autoCreate: true })

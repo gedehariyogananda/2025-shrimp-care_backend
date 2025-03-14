@@ -12,6 +12,7 @@ export default class DiseaseController {
     "image_disease",
     "risk_level",
     "description",
+    "max_symptom",
   ];
 
   public async index({ request, response }: HttpContextContract) {

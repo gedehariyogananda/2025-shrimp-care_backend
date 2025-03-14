@@ -16,5 +16,6 @@ export default class CreateDiseaseValidator {
     image_disease: schema.string({}, [rules.maxLength(255)]),
     risk_level: schema.number(),
     description: schema.string({}, [rules.maxLength(255)]),
+    max_symptom: schema.number(),
   });
 }

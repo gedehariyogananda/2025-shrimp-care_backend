@@ -92,4 +92,15 @@ export default class DiagnosisController {
       return response.error(error.message);
     }
   }
+
+  public async forwardChaining({ request, response }: HttpContextContract) {
+    try {
+      const { symtoms, threshold } = request.only(["symtoms", "threshold"]);
+
+      const result = await this.service.forwardChaining(symtoms, threshold);
+      return response.api(result, "OK", 200, request);
+    } catch (error) {
+      return response.error(error.message);
+    }
+  }
 }
