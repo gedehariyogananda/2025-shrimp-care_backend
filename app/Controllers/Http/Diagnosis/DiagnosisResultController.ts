@@ -7,7 +7,9 @@ import { ValidationException } from '@ioc:Adonis/Core/Validator'
 export default class DiagnosisResultController {
   service = new DiagnosisResultService()
   FETCHED_ATTRIBUTE = [
-    // attribute
+    'diagnosis_id',
+    'disease_id',
+    'percentage',
   ]
 
   public async index ({ request, response }: HttpContextContract) {
