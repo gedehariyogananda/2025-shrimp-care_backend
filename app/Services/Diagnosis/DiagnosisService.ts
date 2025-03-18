@@ -1,5 +1,6 @@
 import BaseService from "App/Base/Services/BaseService";
 import DefaultException from "App/Exceptions/DefaultException";
+import { FormatterHelper } from "App/Helper/FormatterHelper";
 import DiagnosisRepository from "App/Repositories/Diagnosis/DiagnosisRepository";
 import InferenceRuleRepository from "App/Repositories/Diagnosis/InferenceRuleRepository";
 import SymptomsRepository from "App/Repositories/Diagnosis/SymptomsRepository";
@@ -14,7 +15,7 @@ export default class DiagnosisService extends BaseService {
   inferenceRulesRepository = new InferenceRuleRepository();
   diseaseRepository = new DiseaseRepository();
 
-  async forwardChaining(symtoms: string[], threshold: number): Promise<any> {
+  async setDisease(symtoms: string[], threshold: number): Promise<any> {
     for (const symtomID of symtoms) {
       const sypmtom = await this.symtomsRepository.find(symtomID);
       if (!sypmtom) {
@@ -87,7 +88,7 @@ export default class DiagnosisService extends BaseService {
       return {
         disease_id: bestDisease.disease_id,
         disease_name: result.name_disease,
-        confidence: highestPercentage,
+        confidence: FormatterHelper.percentage(highestPercentage),
       };
     } else {
       throw new DefaultException(
