@@ -16,15 +16,21 @@ export default class DiagnosisService extends BaseService {
   diseaseRepository = new DiseaseRepository();
 
   async setDisease(symtoms: string[], threshold: number): Promise<any> {
-    for (const symtomID of symtoms) {
-      const sypmtom = await this.symtomsRepository.find(symtomID);
-      if (!sypmtom) {
+    let symtomsID = [] as string[];
+    for (const symtomCode of symtoms) {
+      const sypmtom = await this.symtomsRepository.findByCodeSymptom(
+        symtomCode
+      );
+
+      if (sypmtom) {
+        symtomsID.push(sypmtom.id);
+      } else {
         throw new DefaultException("Gejala tidak ditemukan!", 400);
       }
     }
 
     const matchingDiseases =
-      await this.inferenceRulesRepository.findBySymptomId(symtoms);
+      await this.inferenceRulesRepository.findBySymptomId(symtomsID);
 
     if (matchingDiseases.length === 0) {
       throw new DefaultException("Tidak ada penyakit yang cocok!", 400);
@@ -50,7 +56,7 @@ export default class DiagnosisService extends BaseService {
         diseaseMap[disease_id] = {
           disease_id: disease_id,
           match_count: 0,
-          max_symptoms: diseaseData.max_symptom,
+          max_symptoms: diseaseData.max_symptoms,
           symptom_ids: [],
         };
       }

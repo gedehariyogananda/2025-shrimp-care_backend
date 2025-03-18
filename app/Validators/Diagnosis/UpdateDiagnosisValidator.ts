@@ -10,8 +10,10 @@ export default class UpdateDiagnosisValidator {
     user_id: schema.string.optional({}, [
       rules.exists({ table: "users", column: "id" }),
     ]),
-    disease_id: schema.string.optional({}, [
+    best_disease_id: schema.string.optional({}, [
       rules.exists({ table: "diseases", column: "id" }),
     ]),
+    threshold: schema.number.optional(),
+    best_percentage_disease: schema.number.optional(),
   });
 }

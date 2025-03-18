@@ -18,7 +18,13 @@ export default class Diagnosis extends BaseModel {
   public user_id: string;
 
   @column()
-  public disease_id: string;
+  public best_disease_id: string;
+
+  @column()
+  public threshold: number;
+
+  @column()
+  public best_percentage_disease: number;
 
   @column.dateTime({ autoCreate: true })
   public created_at: DateTime;
@@ -42,7 +48,7 @@ export default class Diagnosis extends BaseModel {
   public user: BelongsTo<typeof User>;
 
   @belongsTo(() => Disease, {
-    foreignKey: "disease_id",
+    foreignKey: "best_disease_id",
   })
   public disease: BelongsTo<typeof Disease>;
 }

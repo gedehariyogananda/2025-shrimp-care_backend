@@ -6,7 +6,12 @@ import { ValidationException } from "@ioc:Adonis/Core/Validator";
 
 export default class DiagnosisController {
   service = new DiagnosisService();
-  FETCHED_ATTRIBUTE = ["user_id", "disease_id"];
+  FETCHED_ATTRIBUTE = [
+    "user_id",
+    "best_disease_id",
+    "threshold",
+    "best_percentage_disease",
+  ];
 
   public async index({ request, response }: HttpContextContract) {
     try {
@@ -93,7 +98,7 @@ export default class DiagnosisController {
     }
   }
 
-  public async forwardChaining({ request, response }: HttpContextContract) {
+  public async setDiseaseShrimp({ request, response }: HttpContextContract) {
     try {
       const { symtoms, threshold } = request.only(["symtoms", "threshold"]);
 

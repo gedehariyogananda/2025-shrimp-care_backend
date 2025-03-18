@@ -27,7 +27,7 @@ export default class Disease extends BaseModel {
   public risk_level: number;
 
   @column()
-  public max_symptom: number;
+  public max_symptoms: number;
 
   @column()
   public description: string;

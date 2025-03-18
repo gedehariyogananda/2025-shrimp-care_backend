@@ -1,5 +1,5 @@
 export class FormatterHelper {
-  static percentage(value: number, decimals: number = 2): string {
-    return `${(value * 100).toFixed(decimals)}%`;
+  static percentage(value: number, decimals: number = 0): string {
+    return `${value.toFixed(decimals)}%`;
   }
 }
