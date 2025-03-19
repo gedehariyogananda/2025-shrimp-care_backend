@@ -16,6 +16,6 @@ export default class CreateDiagnosisValidator {
       rules.exists({ table: Disease.table, column: "id" }),
     ]),
     threshold: schema.number(),
-    best_percentage_disease: schema.number(),
+    best_percentage_disease: schema.number.optional(),
   });
 }
