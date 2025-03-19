@@ -5,10 +5,13 @@ import {
   BelongsTo,
   belongsTo,
   column,
+  HasMany,
+  hasMany,
 } from "@ioc:Adonis/Lucid/Orm";
 import { v4 as uuidv4, v5 as uuidv5 } from "uuid";
 import User from "../User/User";
 import Disease from "../Master/Disease";
+import DiagnosisResult from "./DiagnosisResult";
 
 export default class Diagnosis extends BaseModel {
   @column({ isPrimary: true })
@@ -51,4 +54,10 @@ export default class Diagnosis extends BaseModel {
     foreignKey: "best_disease_id",
   })
   public disease: BelongsTo<typeof Disease>;
+
+  @hasMany(() => DiagnosisResult, {
+    foreignKey: "diagnosis_id",
+  })
+
+  public diagnosisResult: HasMany<typeof DiagnosisResult>;
 }

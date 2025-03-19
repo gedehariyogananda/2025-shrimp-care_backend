@@ -16,6 +16,21 @@ export default class DiagnosisController {
   public async index({ request, response }: HttpContextContract) {
     try {
       const options = request.parseParams(request.all());
+      options.relation = [
+        "diagnosisResult.disease",
+        "diagnosisResult.diagnosisDetail.symptom",
+        "disease",
+      ];
+
+      options.relationOptions = [
+        { relation: "disease", fields: ["id", "name_disease", "code_disease"] },
+        { relation: "diagnosisResult", fields: ["id", "diagnosis_id", "disease_id", "percentage"] },
+        { relation: "diagnosisDetail", fields: ["id", "diagnosis_result_id", "symptom_id"] },
+        { relation: "symptom", fields: ["id", "name_symptom", "code_symptom"] },
+      ];
+
+      options.fields = ["id", "user_id", "threshold", "best_disease_id", "best_percentage_disease"];
+
       const result = await this.service.getAll(options);
       return response.api(result, "OK", 200, request);
     } catch (error) {
@@ -98,11 +113,19 @@ export default class DiagnosisController {
     }
   }
 
-  public async setDiseaseShrimp({ auth, request, response }: HttpContextContract) {
+  public async setDiseaseShrimp({
+    auth,
+    request,
+    response,
+  }: HttpContextContract) {
     try {
       const { symtoms, threshold } = request.only(["symtoms", "threshold"]);
 
-      const result = await this.service.setDisease(symtoms, threshold, auth.user?.id);
+      const result = await this.service.setDisease(
+        symtoms,
+        threshold,
+        auth.user?.id
+      );
       return response.api(result, "OK", 200, request);
     } catch (error) {
       return response.error(error.message);

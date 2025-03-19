@@ -1,7 +1,15 @@
 import { DateTime } from "luxon";
-import { BaseModel, BelongsTo, belongsTo, column } from "@ioc:Adonis/Lucid/Orm";
+import {
+  BaseModel,
+  BelongsTo,
+  belongsTo,
+  column,
+  HasMany,
+  hasMany,
+} from "@ioc:Adonis/Lucid/Orm";
 import Diagnosis from "./Diagnosis";
 import Disease from "../Master/Disease";
+import DiagnosisDetail from "./DiagnosisDetail";
 
 export default class DiagnosisResult extends BaseModel {
   @column({ isPrimary: true })
@@ -35,4 +43,9 @@ export default class DiagnosisResult extends BaseModel {
     foreignKey: "disease_id",
   })
   public disease: BelongsTo<typeof Disease>;
+
+  @hasMany(() => DiagnosisDetail, {
+    foreignKey: "diagnosis_result_id",
+  })
+  public diagnosisDetail: HasMany<typeof DiagnosisDetail>;
 }
