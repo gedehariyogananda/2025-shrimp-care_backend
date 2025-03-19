@@ -1,7 +1,9 @@
 import BaseService from "App/Base/Services/BaseService";
 import DefaultException from "App/Exceptions/DefaultException";
 import { FormatterHelper } from "App/Helper/FormatterHelper";
+import DiagnosisDetailRepository from "App/Repositories/Diagnosis/DiagnosisDetailRepository";
 import DiagnosisRepository from "App/Repositories/Diagnosis/DiagnosisRepository";
+import DiagnosisResultRepository from "App/Repositories/Diagnosis/DiagnosisResultRepository";
 import InferenceRuleRepository from "App/Repositories/Diagnosis/InferenceRuleRepository";
 import SymptomsRepository from "App/Repositories/Diagnosis/SymptomsRepository";
 import DiseaseRepository from "App/Repositories/Master/DiseaseRepository";
@@ -14,8 +16,19 @@ export default class DiagnosisService extends BaseService {
   symtomsRepository = new SymptomsRepository();
   inferenceRulesRepository = new InferenceRuleRepository();
   diseaseRepository = new DiseaseRepository();
+  diagnosisResultRepository = new DiagnosisResultRepository();
+  diagnosisDetailRepository = new DiagnosisDetailRepository();
 
-  async setDisease(symtoms: string[], threshold: number): Promise<any> {
+  async setDisease(
+    symtoms: string[],
+    threshold: number,
+    authID: string | undefined
+  ): Promise<any> {
+    const diagnosisInit = await this.repository.store({
+      user_id: authID,
+      threshold: threshold,
+    });
+
     let symtomsID = [] as string[];
     for (const symtomCode of symtoms) {
       const sypmtom = await this.symtomsRepository.findByCodeSymptom(
@@ -83,6 +96,20 @@ export default class DiagnosisService extends BaseService {
         highestPercentage = percentage;
         bestDisease = disease;
       }
+
+      // set history
+      const detailResult = await this.diagnosisResultRepository.store({
+        diagnosis_id: diagnosisInit.id,
+        disease_id: disease.disease_id,
+        percentage: percentage,
+      });
+
+      for (const symptomID of disease.symptom_ids) {
+        await this.diagnosisDetailRepository.store({
+          diagnosis_result_id: detailResult.id,
+          symptom_id: symptomID,
+        });
+      }
     }
 
     if (bestDisease && highestPercentage >= threshold) {
@@ -90,6 +117,12 @@ export default class DiagnosisService extends BaseService {
       if (!result) {
         throw new DefaultException("Penyakit tidak ditemukan!", 400);
       }
+
+      // update main diagnosis init
+      await this.repository.update(diagnosisInit.id, {
+        best_disease_id: bestDisease.disease_id,
+        best_percentage_disease: highestPercentage,
+      });
 
       return {
         disease_id: bestDisease.disease_id,

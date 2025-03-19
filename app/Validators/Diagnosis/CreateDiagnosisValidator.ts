@@ -12,7 +12,7 @@ export default class CreateDiagnosisValidator {
     user_id: schema.string({}, [
       rules.exists({ table: User.table, column: "id" }),
     ]),
-    best_disease_id: schema.string({}, [
+    best_disease_id: schema.string.optional({}, [
       rules.exists({ table: Disease.table, column: "id" }),
     ]),
     threshold: schema.number(),

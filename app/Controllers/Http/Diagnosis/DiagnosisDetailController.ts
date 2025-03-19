@@ -7,7 +7,7 @@ import { ValidationException } from '@ioc:Adonis/Core/Validator'
 export default class DiagnosisDetailController {
   service = new DiagnosisDetailService()
   FETCHED_ATTRIBUTE = [
-    'diagnosis_id',
+    'diagnosis_result_id',
     'symptom_id',
   ]
 

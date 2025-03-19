@@ -15,7 +15,7 @@ export default class DiagnosisDetail extends BaseModel {
   public id: string;
 
   @column()
-  public diagnosis_id: string;
+  public diagnosis_result_id: string;
 
   @column()
   public symptom_id: string;
@@ -37,7 +37,7 @@ export default class DiagnosisDetail extends BaseModel {
   }
 
   @belongsTo(() => Diagnosis, {
-    foreignKey: "diagnosis_id",
+    foreignKey: "diagnosis_result_id",
   })
   public diagnosis: BelongsTo<typeof Diagnosis>;
 

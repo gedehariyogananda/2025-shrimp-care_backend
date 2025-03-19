@@ -98,11 +98,11 @@ export default class DiagnosisController {
     }
   }
 
-  public async setDiseaseShrimp({ request, response }: HttpContextContract) {
+  public async setDiseaseShrimp({ auth, request, response }: HttpContextContract) {
     try {
       const { symtoms, threshold } = request.only(["symtoms", "threshold"]);
 
-      const result = await this.service.setDisease(symtoms, threshold);
+      const result = await this.service.setDisease(symtoms, threshold, auth.user?.id);
       return response.api(result, "OK", 200, request);
     } catch (error) {
       return response.error(error.message);

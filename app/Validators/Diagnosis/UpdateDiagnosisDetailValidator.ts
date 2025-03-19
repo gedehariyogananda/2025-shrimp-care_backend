@@ -2,6 +2,7 @@ import { schema, validator, rules } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Diagnosis from 'App/Models/Diagnosis/Diagnosis'
 import Symptoms from 'App/Models/Diagnosis/Symptoms'
+import DiagnosisResult from 'App/Models/Diagnosis/DiagnosisResult'
 
 export default class UpdateDiagnosisDetailValidator {
   constructor (protected ctx: HttpContextContract) {
@@ -10,8 +11,8 @@ export default class UpdateDiagnosisDetailValidator {
   public reporter = validator.reporters.api
 
   public schema = schema.create({
-    diagnosis_id: schema.string.optional({}, [
-      rules.exists({ table: Diagnosis.table, column: 'id' }),
+    diagnosis_result_id: schema.string.optional({}, [
+      rules.exists({ table: DiagnosisResult.table, column: 'id' }),
     ]),
     symptom_id: schema.string.optional({}, [
       rules.exists({ table: Symptoms.table, column: 'id' }),
