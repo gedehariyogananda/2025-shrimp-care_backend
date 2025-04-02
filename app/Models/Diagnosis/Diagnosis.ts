@@ -12,6 +12,7 @@ import { v4 as uuidv4, v5 as uuidv5 } from "uuid";
 import User from "../User/User";
 import Disease from "../Master/Disease";
 import DiagnosisResult from "./DiagnosisResult";
+import { APP_CONSTANT } from "App/Base/Constant/AppConstant";
 
 export default class Diagnosis extends BaseModel {
   @column({ isPrimary: true })
@@ -29,7 +30,7 @@ export default class Diagnosis extends BaseModel {
   @column()
   public best_percentage_disease: number;
 
-  @column.dateTime({ autoCreate: true })
+  @column.dateTime({ autoCreate: true, serialize: (value) => value?.toFormat("dd MMMM yyyy", { locale: APP_CONSTANT.DEFAULT_LANGUAGE }) })
   public created_at: DateTime;
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
