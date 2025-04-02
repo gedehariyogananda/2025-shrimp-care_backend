@@ -17,5 +17,11 @@ export default class UpdateDiseaseValidator {
     risk_level: schema.number.optional(),
     description: schema.string.optional({}, [rules.maxLength(255)]),
     max_symptom: schema.number.optional(),
+
+    definition_disease: schema.string.optional(),
+    symptoms_disease: schema.string.optional(),
+    causes_disease: schema.string.optional(),
+    prevention_disease: schema.string.optional(),
+    recomendation_disease: schema.string.optional(),
   });
 }

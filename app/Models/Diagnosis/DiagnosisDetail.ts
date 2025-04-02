@@ -9,6 +9,7 @@ import {
 import { v4 as uuidv4, v5 as uuidv5 } from "uuid";
 import Diagnosis from "./Diagnosis";
 import Symptoms from "./Symptoms";
+import DiagnosisResult from "./DiagnosisResult";
 
 export default class DiagnosisDetail extends BaseModel {
   @column({ isPrimary: true })
@@ -36,10 +37,10 @@ export default class DiagnosisDetail extends BaseModel {
     data.id = uuidv5("DiagnosisDetail", namespace);
   }
 
-  @belongsTo(() => Diagnosis, {
+  @belongsTo(() => DiagnosisResult, {
     foreignKey: "diagnosis_result_id",
   })
-  public diagnosis: BelongsTo<typeof Diagnosis>;
+  public diagnosis_result: BelongsTo<typeof DiagnosisResult>;
 
   @belongsTo(() => Symptoms, {
     foreignKey: "symptom_id",

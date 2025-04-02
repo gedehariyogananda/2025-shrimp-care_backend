@@ -125,6 +125,7 @@ export default class DiagnosisService extends BaseService {
       });
 
       return {
+        diagnosis_id: diagnosisInit.id,
         disease_id: bestDisease.disease_id,
         disease_name: result.name_disease,
         confidence: FormatterHelper.percentage(highestPercentage),

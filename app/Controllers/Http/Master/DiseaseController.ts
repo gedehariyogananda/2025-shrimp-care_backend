@@ -13,6 +13,12 @@ export default class DiseaseController {
     "risk_level",
     "description",
     "max_symptom",
+
+    "definition_disease",
+    "symptoms_disease",
+    "causes_disease",
+    "prevention_disease",
+    "recomendation_disease",
   ];
 
   public async index({ request, response }: HttpContextContract) {
@@ -51,7 +57,25 @@ export default class DiseaseController {
       if (!result) {
         return response.api(null, `Disease with id: ${params.id} not found`);
       }
-      return response.api(result);
+
+      const responseData = {
+        id: result.id,
+        name_disease: result.name_disease,
+        image_disease: result.image_disease,
+        resk_level: result.risk_level,
+        information: {
+          definition_disease: result.definition_disease,
+          symptoms_disease: result.symptoms_disease,
+          causes_disease: result.causes_disease,
+          more_information_disease: result.description,
+        },
+        prevention: {
+          prevention_disease: result.prevention_disease,
+          recomendation_disease: result.recomendation_disease,
+        },
+      }
+
+      return response.api(responseData);
     } catch (error) {
       return response.error(error.message);
     }

@@ -32,6 +32,21 @@ export default class Disease extends BaseModel {
   @column()
   public description: string;
 
+  @column()
+  public definition_disease: string;
+
+  @column()
+  public symptoms_disease: string;
+
+  @column()
+  public causes_disease: string;
+
+  @column()
+  public prevention_disease: string;
+
+  @column()
+  public recomendation_disease: string;
+
   @column.dateTime({ autoCreate: true })
   public created_at: DateTime;
 
