@@ -8,6 +8,7 @@ export default class UpdateUserValidator {
   public reporter = validator.reporters.api;
 
   public schema = schema.create({
+    name: schema.string.optional({}, [rules.maxLength(100)]),
     username: schema.string.optional({}, [
       rules.maxLength(100),
       rules.unique({ table: User.table, column: "username" }),

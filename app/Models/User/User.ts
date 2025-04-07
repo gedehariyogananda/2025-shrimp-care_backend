@@ -1,53 +1,61 @@
-import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
-import { v4 as uuidv4, v5 as uuidv5 } from 'uuid'
-import Hash from '@ioc:Adonis/Core/Hash'
-import Diagnosis from '../Diagnosis/Diagnosis'
+import { DateTime } from "luxon";
+import {
+  BaseModel,
+  beforeCreate,
+  column,
+  HasMany,
+  hasMany,
+} from "@ioc:Adonis/Lucid/Orm";
+import { v4 as uuidv4, v5 as uuidv5 } from "uuid";
+import Hash from "@ioc:Adonis/Core/Hash";
+import Diagnosis from "../Diagnosis/Diagnosis";
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
-  public id: string
+  public id: string;
 
   @column()
-  public username: string
+  public name: string;
 
   @column()
-  public email: string
+  public username: string;
+
+  @column()
+  public email: string;
 
   @column({ serializeAs: null })
-  public password: string
+  public password: string;
 
   @column()
-  public employment: string
+  public employment: string;
 
   @column()
-  public roles: string
+  public roles: string;
 
   @column()
-  public google_id: string
+  public google_id: string;
 
   @column.dateTime({ autoCreate: true })
-  public created_at: DateTime
+  public created_at: DateTime;
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updated_at: DateTime
+  public updated_at: DateTime;
 
   static get table() {
-    return "user.user" 
+    return "user.user";
   }
 
   @beforeCreate()
   public static async setUUID(data: User) {
-    const namespace = uuidv4()
-    data.id = uuidv5('User', namespace)
+    const namespace = uuidv4();
+    data.id = uuidv5("User", namespace);
     if (data.password) {
-      data.password = await Hash.make(data.password)
+      data.password = await Hash.make(data.password);
     }
   }
 
   @hasMany(() => Diagnosis, {
-    foreignKey: 'user_id',
+    foreignKey: "user_id",
   })
-
-  public diagnosis: HasMany<typeof Diagnosis>
+  public diagnosis: HasMany<typeof Diagnosis>;
 }

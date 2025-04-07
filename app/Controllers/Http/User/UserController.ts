@@ -7,6 +7,7 @@ import { ValidationException } from "@ioc:Adonis/Core/Validator";
 export default class UserController {
   service = new UserService();
   FETCHED_ATTRIBUTE = [
+    "name",
     "username",
     "email",
     "password",
@@ -29,7 +30,7 @@ export default class UserController {
     try {
       await request.validate(CreateUserValidator);
       const data = request.only(this.FETCHED_ATTRIBUTE);
-      data.username = data.username.toLowerCase();
+      data.username = data.name.toLowerCase();
       const result = await this.service.store(data);
       return response.api(
         result,
