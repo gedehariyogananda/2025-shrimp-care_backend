@@ -132,13 +132,13 @@ export default class DiagnosisService extends BaseService {
           throw new DefaultException("Penyakit tidak ditemukan!", 400);
         }
 
+        trx.commit();
+
         // update main diagnosis init
         await this.repository.update(diagnosisInit.id, {
           best_disease_id: bestDisease.disease_id,
           best_percentage_disease: highestPercentage,
         });
-
-        trx.commit();
 
         return {
           diagnosis_id: diagnosisInit.id,
