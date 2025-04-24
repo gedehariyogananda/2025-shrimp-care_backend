@@ -140,6 +140,13 @@ export default class DiagnosisService extends BaseService {
           best_percentage_disease: highestPercentage,
         });
 
+        console.log({
+          diagnosis_id: diagnosisInit.id,
+          disease_id: bestDisease.disease_id,
+          disease_name: result.name_disease,
+          confidence: FormatterHelper.percentage(highestPercentage),
+        });
+
         return {
           diagnosis_id: diagnosisInit.id,
           disease_id: bestDisease.disease_id,
