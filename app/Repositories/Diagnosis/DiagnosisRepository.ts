@@ -1,4 +1,6 @@
-import { TransactionClientContract } from "@ioc:Adonis/Lucid/Database";
+import Database, {
+  TransactionClientContract,
+} from "@ioc:Adonis/Lucid/Database";
 import BaseRepository from "App/Base/Repositories/BaseRepository";
 import Diagnosis from "App/Models/Diagnosis/Diagnosis";
 
@@ -22,5 +24,16 @@ export default class DiagnosisRepository extends BaseRepository {
     } catch (error) {
       throw error;
     }
+  }
+
+  public async updateTrx(
+    id: string,
+    data: any,
+    trx: TransactionClientContract
+  ) {
+    return await Database.from("diagnosis.diagnosis")
+      .where("id", id)
+      .useTransaction(trx)
+      .update(data);
   }
 }
