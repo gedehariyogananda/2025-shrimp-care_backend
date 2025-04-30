@@ -104,23 +104,25 @@ export default class DiagnosisService extends BaseService {
         }
 
         // set history
-        const detailResult = await this.diagnosisResultRepository.storeTrx(
-          {
-            diagnosis_id: diagnosisInit.id,
-            disease_id: disease.disease_id,
-            percentage: percentage,
-          },
-          trx
-        );
-
-        for (const symptomID of disease.symptom_ids) {
-          await this.diagnosisDetailRepository.storeTrx(
+        if (percentage > threshold) {
+          const detailResult = await this.diagnosisResultRepository.storeTrx(
             {
-              diagnosis_result_id: detailResult.id,
-              symptom_id: symptomID,
+              diagnosis_id: diagnosisInit.id,
+              disease_id: disease.disease_id,
+              percentage: percentage,
             },
             trx
           );
+
+          for (const symptomID of disease.symptom_ids) {
+            await this.diagnosisDetailRepository.storeTrx(
+              {
+                diagnosis_result_id: detailResult.id,
+                symptom_id: symptomID,
+              },
+              trx
+            );
+          }
         }
       }
 
@@ -143,13 +145,6 @@ export default class DiagnosisService extends BaseService {
         );
 
         trx.commit();
-
-        console.log({
-          diagnosis_id: diagnosisInit.id,
-          disease_id: bestDisease.disease_id,
-          disease_name: result.name_disease,
-          confidence: FormatterHelper.percentage(highestPercentage),
-        });
 
         return {
           diagnosis_id: diagnosisInit.id,
