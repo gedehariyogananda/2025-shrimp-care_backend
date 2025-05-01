@@ -10,4 +10,5 @@ COPY . .
 
 EXPOSE 3333
 
-CMD ["node", "server.js"]
+# development mode
+CMD ["node", "ace", "serve", "--watch"]
