@@ -14,7 +14,7 @@ WORKDIR /app
 
 COPY --from=build /app /app
 
-EXPOSE 3333
+EXPOSE ${PORT}
 
 # development mode
 CMD ["node", "ace", "serve", "--watch"]
