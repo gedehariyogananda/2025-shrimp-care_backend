@@ -18,42 +18,54 @@
 |
 */
 
-import Route from '@ioc:Adonis/Core/Route'
-import fs from 'fs';
+import Route from "@ioc:Adonis/Core/Route";
+import fs from "fs";
+import Env from "@ioc:Adonis/Core/Env";
 
 Route.group(function () {
   if (fs.existsSync(`${__dirname}/routes`)) {
-    const folders = fs.readdirSync(`${__dirname}/routes`)
+    const folders = fs.readdirSync(`${__dirname}/routes`);
     folders.map((folder) => {
-      if (folder != 'auth') {
-        const files = fs.readdirSync(`${__dirname}/routes/${folder}`)
+      if (folder != "auth") {
+        const files = fs.readdirSync(`${__dirname}/routes/${folder}`);
         files.map((file) => {
-          if (!file.includes('.map')) {
-            require(`${__dirname}/routes/${folder}/${file}`)
+          if (!file.includes(".map")) {
+            require(`${__dirname}/routes/${folder}/${file}`);
           }
-        })
+        });
       }
-    })
+    });
   }
-}).prefix('api')
+}).prefix("api");
 
 Route.group(function () {
   if (fs.existsSync(`${__dirname}/routes/auth`)) {
-    const files = fs.readdirSync(`${__dirname}/routes/auth`)
+    const files = fs.readdirSync(`${__dirname}/routes/auth`);
     files.map((file) => {
-      if (!file.includes('.map')) {
-        require(`${__dirname}/routes/auth/${file}`)
+      if (!file.includes(".map")) {
+        require(`${__dirname}/routes/auth/${file}`);
       }
-    })
+    });
   }
-}).prefix('api/auth')
+}).prefix("api/auth");
 
-Route.get('/', async ({ view }) => {
-  return view.render('welcome')
-})
+Route.get("/", async ({ view }) => {
+  return view.render("welcome");
+});
 
-Route.get('/api', async ({ response }) => {
-  return response.api(null, 'It works!')
-})
+Route.get("/api", async ({ response }) => {
+  return response.api(null, "It works!");
+});
 
-Route.on('*').render('index')
+Route.get("test", async ({ response }) => {
+  return response.api(
+    {
+      data: {
+        environment: Env.get("NODE_ENV"),
+      },
+    },
+    "Testing Environment!"
+  );
+});
+
+Route.on("*").render("index");
