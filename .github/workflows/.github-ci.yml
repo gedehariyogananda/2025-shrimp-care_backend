@@ -17,6 +17,9 @@ jobs:
 
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
+      
+      - name: Check the current user
+        run: whoami
 
       - name: Build for Development
         run: |
