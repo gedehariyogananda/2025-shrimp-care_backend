@@ -15,11 +15,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v2
-      
       - name: Check the current user
         run: whoami
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
 
       - name: Build for Development
         run: |
