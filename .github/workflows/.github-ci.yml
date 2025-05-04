@@ -18,6 +18,9 @@ jobs:
       - name: Check the current user
         run: whoami
 
+      - name: Check Docker Info
+        run: docker info
+
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
