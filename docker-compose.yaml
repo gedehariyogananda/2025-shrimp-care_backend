@@ -3,8 +3,8 @@ version: '3.8'
 services:
   app:
     build: .
-    container_name: backend-dev-shrimpcare
+    container_name: ${CONTAINER_NAME}
     ports:
       - ${PORT}:${PORT}
     volumes:
-      - .env:/app/.env
+      - ${PATH_ENV_VPS}:/app/.env
