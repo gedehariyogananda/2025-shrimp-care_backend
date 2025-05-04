@@ -1,26 +1,46 @@
-stages: 
-  - build
+name: Multi Environment CI/CD Github
 
-build-dev: 
-  stage: build
-  tags:
-    - shrimp-care-dev
-  only: 
-    - dev
-  script:
-    - echo "running docker stage development"
-    - docker image prune -f
-    - cp /root/shrimp-care/core_env/.env-development .env
-    - docker compose up --build -d
+on:
+  push:
+    branches:
+      - dev
+      - main
 
-build-prod: 
-  stage: build
-  tags:
-    - shrimp-care-prod
-  only: 
-    - main
-  script:
-    - echo "running docker stage production"
-    - docker image prune -f
-    - cp /root/shrimp-care/core_env/.env-production .env
-    - docker compose up --build -d
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build for Development
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          echo "Running Docker stage development"
+          docker image prune -f
+          if [ -f /root/shrimp-care/core_env/.env-development ]; then
+            echo ".env-development found, copying to .env"
+            cp /root/shrimp-care/core_env/.env-development .env
+          else
+            echo ".env-development not found, please check"
+            exit 1
+          fi
+          docker compose up --build -d
+
+      - name: Build for Production
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Running Docker stage production"
+          docker image prune -f
+          if [ -f /root/shrimp-care/core_env/.env-production ]; then
+            echo ".env-production found, copying to .env"
+            cp /root/shrimp-care/core_env/.env-production .env
+          else
+            echo ".env-production not found, please check"
+            exit 1
+          fi
+          docker compose up --build -d
