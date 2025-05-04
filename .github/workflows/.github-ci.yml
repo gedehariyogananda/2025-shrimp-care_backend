@@ -17,6 +17,9 @@ jobs:
 
       - name: Check the current user
         run: whoami
+      
+      - name: Run docker info with sudo
+        run: sudo docker info  # Menjalankan docker info dengan sudo
 
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
