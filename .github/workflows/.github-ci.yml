@@ -22,9 +22,9 @@ jobs:
         run: |
           echo "Running Docker stage development"
           docker image prune -f
-          if [ -f /root/shrimp-care/core_env/.env-development ]; then
+          if [ -f /shrimp-care/core_env/.env-development ]; then
             echo ".env-development found, copying to .env"
-            cp /root/shrimp-care/core_env/.env-development .env
+            cp /shrimp-care/core_env/.env-development .env
           else
             echo ".env-development not found, please check"
             exit 1
@@ -36,9 +36,9 @@ jobs:
         run: |
           echo "Running Docker stage production"
           docker image prune -f
-          if [ -f /root/shrimp-care/core_env/.env-production ]; then
+          if [ -f /shrimp-care/core_env/.env-production ]; then
             echo ".env-production found, copying to .env"
-            cp /root/shrimp-care/core_env/.env-production .env
+            cp /shrimp-care/core_env/.env-production .env
           else
             echo ".env-production not found, please check"
             exit 1
